@@ -33,6 +33,10 @@ func (t tuple) Dot(b tuple) float64 {
 	return t.X*b.X + t.Y*b.Y + t.Z*b.Z + t.W*b.W
 }
 
+func (t tuple) HadamardProduct(color tuple) tuple {
+	return tuple{t.X * color.X, t.Y * color.Y, t.Z * color.Z, 0}
+}
+
 func (t tuple) Magnitude() float64 {
 	return math.Sqrt(t.X*t.X + t.Y*t.Y + t.Z*t.Z)
 }
