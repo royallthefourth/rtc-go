@@ -9,6 +9,24 @@ type tuple struct {
 	W float64
 }
 
+func clampFloat(f float64) int {
+	return max(0, min(int(f), 255))
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
+}
+
+func min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
+
 func point(x, y, z float64) tuple {
 	return tuple{x, y, z, 1}
 }
@@ -56,6 +74,10 @@ func (t tuple) Normalize() tuple {
 
 func (t tuple) Sub(x tuple) tuple {
 	return tuple{t.X - x.X, t.Y - x.Y, t.Z - x.Z, t.W - x.W}
+}
+
+func (t tuple) Int() (int, int, int, int) {
+	return clampFloat(t.X * 255), clampFloat(t.Y * 255), clampFloat(t.Z * 255), clampFloat(t.W * 255)
 }
 
 func (t tuple) IsVector() bool {

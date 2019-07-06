@@ -5,6 +5,12 @@ import (
 	"testing"
 )
 
+func TestClampFloat(t *testing.T) {
+	if clampFloat(-1) != 0 {
+		t.Errorf(`Expected -1 to be 0 but got %d`, clampFloat(-1))
+	}
+}
+
 func TestTuple_Magnitude(t *testing.T) {
 	m := vector(1, 0, 0).Magnitude()
 	if !floatsEqual(1, m) {
@@ -32,10 +38,10 @@ func TestTuple_Dot(t *testing.T) {
 
 func TestTuple_Cross(t *testing.T) {
 	if !vector(1, 2, 3).Cross(vector(2, 3, 4)).Equals(vector(-1, 2, -1)) {
-		t.Fail()
+		t.Errorf(`Expected 1,2,3 X 2,3,4 to be -1,2,-1 but got %v`, vector(1, 2, 3).Cross(vector(2, 3, 4)))
 	}
 
 	if !vector(2, 3, 4).Cross(vector(1, 2, 3)).Equals(vector(1, -2, 1)) {
-		t.Fail()
+		t.Errorf(`Expected 2,3,4 X 1,2,3 to be 1,-2,1 but got %v`, vector(2, 3, 4).Cross(vector(1, 2, 3)))
 	}
 }

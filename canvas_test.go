@@ -19,7 +19,10 @@ func TestCanvas_GetPixel(t *testing.T) {
 
 func TestCanvas_Ppm(t *testing.T) {
 	b := strings.Builder{}
-	c := newCanvas(5,3)
+	c := newCanvas(5, 3)
+	c.SetPixel(0, 0, tuple{1.5, 0, 0, 0})
+	c.SetPixel(2, 1, tuple{0, 0.5, 0, 0})
+	c.SetPixel(4, 2, tuple{-0.5, 0, 1, 0})
 	ch := make(chan string)
 	go c.Ppm(ch)
 	for line := range ch {
@@ -29,9 +32,14 @@ func TestCanvas_Ppm(t *testing.T) {
 		}
 	}
 
-	lines := strings.Split(b.String(), "\n")
+	rawPpm := b.String()
+	lines := strings.Split(rawPpm, "\n")
 
 	if lines[0] != `P3` || lines[2] != `255` {
-		t.Errorf(`Incorrect PPM header %s`, b.String())
+		t.Errorf(`Incorrect PPM header %s`, rawPpm)
+	}
+
+	if lines[3][:7] != `255 0 0` {
+		t.Errorf("PPM line 4 should start with \"255 0 0\" but got \n%s", rawPpm)
 	}
 }
