@@ -21,6 +21,11 @@ func (c canvas) GetPixel(x, y int) tuple {
 	return c.Image[y][x]
 }
 
+func (c canvas) Ppm() string {
+	out := make([]byte, 11)
+
+}
+
 func (c canvas) SetPixel(x, y int, color tuple) {
 	c.Image[y][x] = color
 }
