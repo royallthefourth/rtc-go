@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type canvas struct {
 	Image  [][]tuple
 	Height uint
@@ -21,9 +23,9 @@ func (c canvas) GetPixel(x, y int) tuple {
 	return c.Image[y][x]
 }
 
-func (c canvas) Ppm() string {
-	out := make([]byte, 11)
-
+func (c canvas) Ppm(out chan string) {
+	out <- fmt.Sprintf("P3\n%d %d\n255\n", c.Width, c.Height)
+	close(out)
 }
 
 func (c canvas) SetPixel(x, y int, color tuple) {
