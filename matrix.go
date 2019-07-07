@@ -48,6 +48,17 @@ func RotZ(radians float64) matrix {
 	return m
 }
 
+func Shear(xy, xz, yx, yz, zx, zy float64) matrix {
+	m := identity()
+	m[0][1] = xy
+	m[0][2] = xz
+	m[1][0] = yx
+	m[1][2] = yz
+	m[2][0] = zx
+	m[2][1] = zy
+	return m
+}
+
 func (m matrix) Cofactor(row, col int) float64 {
 	minor := m.Minor(row, col)
 

@@ -188,3 +188,35 @@ func TestRotZ(t *testing.T) {
 		t.Errorf(`Expected %v but got %v`, point(-1, 0, 0), fullQuarter.MulTuple(p))
 	}
 }
+
+func TestShear(t *testing.T) {
+	trans := Shear(1,0,0,0,0,0)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(5,3,4)){
+		t.Errorf(`Expected %v but got %v`, point(5,3,4), trans.MulTuple(point(2,3,4)))
+	}
+
+	trans = Shear(0,1,0,0,0,0)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(6,3,4)){
+		t.Errorf(`Expected %v but got %v`, point(6,3,4), trans.MulTuple(point(2,3,4)))
+	}
+
+	trans = Shear(0,0,1,0,0,0)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(2,5,4)){
+		t.Errorf(`Expected %v but got %v`, point(2,5,4), trans.MulTuple(point(2,3,4)))
+	}
+
+	trans = Shear(0,0,0,1,0,0)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(2,7,4)){
+		t.Errorf(`Expected %v but got %v`, point(2,7,4), trans.MulTuple(point(2,3,4)))
+	}
+
+	trans = Shear(0,0,0,0,1,0)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(2,3,6)){
+		t.Errorf(`Expected %v but got %v`, point(2,3,6), trans.MulTuple(point(2,3,4)))
+	}
+
+	trans = Shear(0,0,0,0,0,1)
+	if !trans.MulTuple(point(2,3,4)).Equals(point(2,3,7)){
+		t.Errorf(`Expected %v but got %v`, point(2,3,7), trans.MulTuple(point(2,3,4)))
+	}
+}
