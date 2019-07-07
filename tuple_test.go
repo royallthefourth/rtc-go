@@ -46,6 +46,27 @@ func TestTuple_Cross(t *testing.T) {
 	}
 }
 
+func TestTuple_Scaling(t *testing.T) {
+	trans := point(2, 3, 4).Scaling()
+	res := trans.MulTuple(point(-4, 6, 8))
+	ref := point(-8, 18, 32)
+
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.MulTuple(vector(-4, 6, 8))
+	ref = vector(-8, 18, 32)
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.Inverse().MulTuple(vector(-4, 6, 8))
+	if !res.Equals(vector(-2, 2, 2)) {
+		t.Errorf(`Expected %v but got %v`, vector(-2, 2, 2), res)
+	}
+}
+
 func TestTuple_Translation(t *testing.T) {
 	trans := point(5, -3, 2).Translation()
 	res := trans.MulTuple(point(-3, 4, 5))
@@ -55,8 +76,8 @@ func TestTuple_Translation(t *testing.T) {
 		t.Errorf(`Expected %v but got %v`, ref, res)
 	}
 
-	res = trans.Inverse().MulTuple(point(-3,4,5))
-	ref = point(-8,7,3)
+	res = trans.Inverse().MulTuple(point(-3, 4, 5))
+	ref = point(-8, 7, 3)
 	if !res.Equals(ref) {
 		t.Errorf(`Expected %v but got %v`, ref, res)
 	}

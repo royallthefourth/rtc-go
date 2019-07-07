@@ -1,6 +1,9 @@
 package main
 
-import "testing"
+import (
+	"math"
+	"testing"
+)
 
 func TestMatrix_Cofactor(t *testing.T) {
 	m := matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}
@@ -141,5 +144,47 @@ func TestMatrix_Transpose(t *testing.T) {
 
 	if !a.Transpose().Equals(b) {
 		t.Errorf(`Expected %v but got %v`, b, a.Transpose())
+	}
+}
+
+func TestRotX(t *testing.T) {
+	halfQuarter := RotX(math.Pi / 4)
+	fullQuarter := RotX(math.Pi / 2)
+	p := point(0,1,0)
+
+	if !halfQuarter.MulTuple(p).Equals(point(0, math.Sqrt(2)/2, math.Sqrt(2)/2)){
+		t.Errorf(`Expected %v but got %v`, point(0, math.Sqrt(2)/2, math.Sqrt(2)/2), halfQuarter.MulTuple(p))
+	}
+
+	if !fullQuarter.MulTuple(p).Equals(point(0, 0, 1)){
+		t.Errorf(`Expected %v but got %v`, point(0, 0, 1), fullQuarter.MulTuple(p))
+	}
+}
+
+func TestRotY(t *testing.T) {
+	halfQuarter := RotY(math.Pi / 4)
+	fullQuarter := RotY(math.Pi / 2)
+	p := point(0,0,1)
+
+	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)){
+		t.Errorf(`Expected %v but got %v`, point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2), halfQuarter.MulTuple(p))
+	}
+
+	if !fullQuarter.MulTuple(p).Equals(point(1, 0, 0)){
+		t.Errorf(`Expected %v but got %v`, point(1, 0, 0), fullQuarter.MulTuple(p))
+	}
+}
+
+func TestRotZ(t *testing.T) {
+	halfQuarter := RotZ(math.Pi / 4)
+	fullQuarter := RotZ(math.Pi / 2)
+	p := point(0,1,0)
+
+	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/-2, math.Sqrt(2)/2, 0)){
+		t.Errorf(`Expected %v but got %v`, point(math.Sqrt(2)/-2,  math.Sqrt(2)/2, 0), halfQuarter.MulTuple(p))
+	}
+
+	if !fullQuarter.MulTuple(p).Equals(point(-1, 0, 0)){
+		t.Errorf(`Expected %v but got %v`, point(-1, 0, 0), fullQuarter.MulTuple(p))
 	}
 }

@@ -1,12 +1,8 @@
 package main
 
-type matrix [][]float64
+import "math"
 
-var identity = matrix{
-	{1, 0, 0, 0},
-	{0, 1, 0, 0},
-	{0, 0, 1, 0},
-	{0, 0, 0, 1}}
+type matrix [][]float64
 
 // newMatrix returns an initialized matrix
 func newMatrix(rows, cols int) matrix {
@@ -14,6 +10,41 @@ func newMatrix(rows, cols int) matrix {
 	for i := 0; i < rows; i++ {
 		m[i] = make([]float64, cols)
 	}
+	return m
+}
+
+func identity() matrix {
+	return matrix{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}}
+}
+
+func RotX(radians float64) matrix {
+	m := identity()
+	m[1][1] = math.Cos(radians)
+	m[1][2] = -1 * math.Sin(radians)
+	m[2][1] = math.Sin(radians)
+	m[2][2] = math.Cos(radians)
+	return m
+}
+
+func RotY(radians float64) matrix {
+	m := identity()
+	m[0][0] = math.Cos(radians)
+	m[0][2] = math.Sin(radians)
+	m[2][0] = -1 * math.Sin(radians)
+	m[2][2] = math.Cos(radians)
+	return m
+}
+
+func RotZ(radians float64) matrix {
+	m := identity()
+	m[0][0] = math.Cos(radians)
+	m[0][1] = -1 * math.Sin(radians)
+	m[1][0] = math.Sin(radians)
+	m[1][1] = math.Cos(radians)
 	return m
 }
 
