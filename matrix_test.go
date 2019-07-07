@@ -150,13 +150,13 @@ func TestMatrix_Transpose(t *testing.T) {
 func TestRotX(t *testing.T) {
 	halfQuarter := RotX(math.Pi / 4)
 	fullQuarter := RotX(math.Pi / 2)
-	p := point(0,1,0)
+	p := point(0, 1, 0)
 
-	if !halfQuarter.MulTuple(p).Equals(point(0, math.Sqrt(2)/2, math.Sqrt(2)/2)){
+	if !halfQuarter.MulTuple(p).Equals(point(0, math.Sqrt(2)/2, math.Sqrt(2)/2)) {
 		t.Errorf(`Expected %v but got %v`, point(0, math.Sqrt(2)/2, math.Sqrt(2)/2), halfQuarter.MulTuple(p))
 	}
 
-	if !fullQuarter.MulTuple(p).Equals(point(0, 0, 1)){
+	if !fullQuarter.MulTuple(p).Equals(point(0, 0, 1)) {
 		t.Errorf(`Expected %v but got %v`, point(0, 0, 1), fullQuarter.MulTuple(p))
 	}
 }
@@ -164,13 +164,13 @@ func TestRotX(t *testing.T) {
 func TestRotY(t *testing.T) {
 	halfQuarter := RotY(math.Pi / 4)
 	fullQuarter := RotY(math.Pi / 2)
-	p := point(0,0,1)
+	p := point(0, 0, 1)
 
-	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)){
+	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2)) {
 		t.Errorf(`Expected %v but got %v`, point(math.Sqrt(2)/2, 0, math.Sqrt(2)/2), halfQuarter.MulTuple(p))
 	}
 
-	if !fullQuarter.MulTuple(p).Equals(point(1, 0, 0)){
+	if !fullQuarter.MulTuple(p).Equals(point(1, 0, 0)) {
 		t.Errorf(`Expected %v but got %v`, point(1, 0, 0), fullQuarter.MulTuple(p))
 	}
 }
@@ -178,45 +178,45 @@ func TestRotY(t *testing.T) {
 func TestRotZ(t *testing.T) {
 	halfQuarter := RotZ(math.Pi / 4)
 	fullQuarter := RotZ(math.Pi / 2)
-	p := point(0,1,0)
+	p := point(0, 1, 0)
 
-	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/-2, math.Sqrt(2)/2, 0)){
-		t.Errorf(`Expected %v but got %v`, point(math.Sqrt(2)/-2,  math.Sqrt(2)/2, 0), halfQuarter.MulTuple(p))
+	if !halfQuarter.MulTuple(p).Equals(point(math.Sqrt(2)/-2, math.Sqrt(2)/2, 0)) {
+		t.Errorf(`Expected %v but got %v`, point(math.Sqrt(2)/-2, math.Sqrt(2)/2, 0), halfQuarter.MulTuple(p))
 	}
 
-	if !fullQuarter.MulTuple(p).Equals(point(-1, 0, 0)){
+	if !fullQuarter.MulTuple(p).Equals(point(-1, 0, 0)) {
 		t.Errorf(`Expected %v but got %v`, point(-1, 0, 0), fullQuarter.MulTuple(p))
 	}
 }
 
 func TestShear(t *testing.T) {
-	trans := Shear(1,0,0,0,0,0)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(5,3,4)){
-		t.Errorf(`Expected %v but got %v`, point(5,3,4), trans.MulTuple(point(2,3,4)))
+	trans := Shear(1, 0, 0, 0, 0, 0)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(5, 3, 4)) {
+		t.Errorf(`Expected %v but got %v`, point(5, 3, 4), trans.MulTuple(point(2, 3, 4)))
 	}
 
-	trans = Shear(0,1,0,0,0,0)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(6,3,4)){
-		t.Errorf(`Expected %v but got %v`, point(6,3,4), trans.MulTuple(point(2,3,4)))
+	trans = Shear(0, 1, 0, 0, 0, 0)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(6, 3, 4)) {
+		t.Errorf(`Expected %v but got %v`, point(6, 3, 4), trans.MulTuple(point(2, 3, 4)))
 	}
 
-	trans = Shear(0,0,1,0,0,0)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(2,5,4)){
-		t.Errorf(`Expected %v but got %v`, point(2,5,4), trans.MulTuple(point(2,3,4)))
+	trans = Shear(0, 0, 1, 0, 0, 0)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(2, 5, 4)) {
+		t.Errorf(`Expected %v but got %v`, point(2, 5, 4), trans.MulTuple(point(2, 3, 4)))
 	}
 
-	trans = Shear(0,0,0,1,0,0)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(2,7,4)){
-		t.Errorf(`Expected %v but got %v`, point(2,7,4), trans.MulTuple(point(2,3,4)))
+	trans = Shear(0, 0, 0, 1, 0, 0)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(2, 7, 4)) {
+		t.Errorf(`Expected %v but got %v`, point(2, 7, 4), trans.MulTuple(point(2, 3, 4)))
 	}
 
-	trans = Shear(0,0,0,0,1,0)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(2,3,6)){
-		t.Errorf(`Expected %v but got %v`, point(2,3,6), trans.MulTuple(point(2,3,4)))
+	trans = Shear(0, 0, 0, 0, 1, 0)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(2, 3, 6)) {
+		t.Errorf(`Expected %v but got %v`, point(2, 3, 6), trans.MulTuple(point(2, 3, 4)))
 	}
 
-	trans = Shear(0,0,0,0,0,1)
-	if !trans.MulTuple(point(2,3,4)).Equals(point(2,3,7)){
-		t.Errorf(`Expected %v but got %v`, point(2,3,7), trans.MulTuple(point(2,3,4)))
+	trans = Shear(0, 0, 0, 0, 0, 1)
+	if !trans.MulTuple(point(2, 3, 4)).Equals(point(2, 3, 7)) {
+		t.Errorf(`Expected %v but got %v`, point(2, 3, 7), trans.MulTuple(point(2, 3, 4)))
 	}
 }
