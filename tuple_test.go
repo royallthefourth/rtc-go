@@ -45,3 +45,24 @@ func TestTuple_Cross(t *testing.T) {
 		t.Errorf(`Expected 2,3,4 X 1,2,3 to be 1,-2,1 but got %v`, vector(2, 3, 4).Cross(vector(1, 2, 3)))
 	}
 }
+
+func TestTuple_Translation(t *testing.T) {
+	trans := point(5, -3, 2).Translation()
+	res := trans.MulTuple(point(-3, 4, 5))
+	ref := point(2, 1, 7)
+
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.Inverse().MulTuple(point(-3,4,5))
+	ref = point(-8,7,3)
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.MulTuple(vector(-3, 4, 5))
+	if !res.Equals(vector(-3, 4, 5)) {
+		t.Errorf(`Expected %v but got %v`, vector(-3, 4, 5), res)
+	}
+}

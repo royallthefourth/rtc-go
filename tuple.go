@@ -91,6 +91,14 @@ func (t tuple) Sub(x tuple) tuple {
 	return tuple{t.X - x.X, t.Y - x.Y, t.Z - x.Z, t.W - x.W}
 }
 
+func (t tuple) Translation() matrix {
+	m := identity
+	m[0][3] = t.X
+	m[1][3] = t.Y
+	m[2][3] = t.Z
+	return m
+}
+
 func floatsEqual(x, y float64) bool {
 	return math.Abs(x-y) < 0.001
 }
