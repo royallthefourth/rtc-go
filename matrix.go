@@ -9,12 +9,35 @@ var identity = matrix{
 	{0, 0, 0, 1}}
 
 // newMatrix returns an initialized matrix
-func newMatrix(rows int, cols int) matrix {
+func newMatrix(rows, cols int) matrix {
 	m := make(matrix, rows)
 	for i := 0; i < rows; i++ {
 		m[i] = make([]float64, cols)
 	}
 	return m
+}
+
+func (m matrix) Cofactor(row, col int) float64 {
+	minor := m.Minor(row, col)
+
+	if (row+col)%2 == 1 {
+		return -1 * minor
+	}
+
+	return minor
+}
+
+func (m matrix) Determinant() float64 {
+	if len(m) == 2 && len(m[0]) == 2 {
+		return m[0][0]*m[1][1] - m[0][1]*m[1][0]
+	}
+
+	det := float64(0)
+	for i := 0; i < len(m[0]); i++ {
+		det += m[0][i] * m.Cofactor(0, i)
+	}
+
+	return det
 }
 
 func (m matrix) Equals(n matrix) bool {
@@ -30,6 +53,22 @@ func (m matrix) Equals(n matrix) bool {
 	}
 
 	return true
+}
+
+func (m matrix) Inverse() matrix {
+	out := newMatrix(len(m), len(m[0]))
+
+	for i := 0; i < len(m); i++ {
+		for j := 0; j < len(m[0]); j++ {
+			out[j][i] = m.Cofactor(i, j) / m.Determinant() // this will panic if determinant is 0, meaning matrix is not invertible
+		}
+	}
+
+	return out
+}
+
+func (m matrix) Minor(row, col int) float64 {
+	return m.Submatrix(row, col).Determinant()
 }
 
 func (m matrix) Mul(n matrix) matrix {
@@ -55,6 +94,34 @@ func (m matrix) MulTuple(t tuple) tuple {
 		Z: o[2][0],
 		W: o[3][0],
 	}
+}
+
+func (m matrix) Submatrix(row, col int) matrix {
+	out := newMatrix(len(m)-1, len(m[0])-1)
+
+	var jOffset, iOffset int
+	for i := 0; i < len(m); i++ {
+		if i == row {
+			continue
+		}
+		iOffset = i
+		if i > row {
+			iOffset = i - 1
+		}
+		for j := 0; j < len(m[0]); j++ {
+			if j == col {
+				continue
+			}
+			jOffset = j
+			if j > col {
+				jOffset = j - 1
+			}
+
+			out[iOffset][jOffset] = m[i][j]
+		}
+	}
+
+	return out
 }
 
 func (m matrix) Transpose() matrix {

@@ -2,6 +2,40 @@ package main
 
 import "testing"
 
+func TestMatrix_Cofactor(t *testing.T) {
+	m := matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}
+	res1 := m.Cofactor(0, 0)
+	res2 := m.Cofactor(1, 0)
+
+	if !floatsEqual(res1, -12) {
+		t.Errorf(`Expected %f but got %f`, float64(-12), res1)
+	}
+
+	if !floatsEqual(res2, -25) {
+		t.Errorf(`Expected %f but got %f`, float64(-25), res2)
+	}
+}
+
+func TestMatrix_Determinant(t *testing.T) {
+	if !floatsEqual(matrix{{1, 5}, {-3, 2}}.Determinant(), 17) {
+		t.Errorf(`Expected 17 but got %f`, matrix{{1, 5}, {-3, 2}}.Determinant())
+	}
+
+	tests := []struct {
+		M matrix
+		D float64
+	}{
+		{matrix{{1, 2, 6}, {-5, 8, -4}, {2, 6, 4}}, -196},
+		{matrix{{-2, -8, 3, 5}, {-3, 1, 7, 3}, {1, 2, -9, 6}, {-6, 7, 7, -9}}, -4071},
+	}
+
+	for _, tst := range tests {
+		if !floatsEqual(tst.M.Determinant(), tst.D) {
+			t.Errorf(`Expected %f but got %f`, tst.D, tst.M.Determinant())
+		}
+	}
+}
+
 func TestMatrix_Equals(t *testing.T) {
 	m := matrix{{1, 2}, {3, 4}}
 	n := matrix{{1, 2}, {3, 4}}
@@ -13,6 +47,26 @@ func TestMatrix_Equals(t *testing.T) {
 
 	if m.Equals(o) {
 		t.Errorf(`%v should not equal %v`, m, o)
+	}
+}
+
+func TestMatrix_Inverse(t *testing.T) {
+	res := matrix{{-5, 2, 6, -8}, {1, -5, 1, 8}, {7, 7, -6, -7}, {1, -3, 7, 4}}.Inverse()
+	ref := matrix{{.21805, .45113, .24060, -.04511},
+		{-.80827, -1.45677, -.44361, .52068},
+		{-.07895, -.22368, -.05263, .19737},
+		{-.52256, -.81391, -.30075, .30639}}
+
+	if !ref.Equals(res) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+}
+
+func TestMatrix_Minor(t *testing.T) {
+	res := matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}.Minor(1, 0)
+
+	if !floatsEqual(25, res) {
+		t.Errorf(`Expected %f but got %f`, float64(25), res)
 	}
 }
 
@@ -54,6 +108,22 @@ func TestMatrix_MulTuple(t *testing.T) {
 
 	if !c.Equals(tuple{18, 24, 33, 1}) {
 		t.Errorf(`Expected 18,24,33,1 but got %v`, c)
+	}
+}
+
+func TestMatrix_Submatrix(t *testing.T) {
+	res := matrix{{1, 5, 0}, {-3, 2, 7}, {0, 6, -3}}.Submatrix(0, 2)
+	ref := matrix{{-3, 2}, {0, 6}}
+
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = matrix{{-6, 1, 1, 6}, {-8, 5, 8, 6}, {-1, 0, 8, 2}, {-7, 1, -1, 1}}.Submatrix(2, 1)
+	ref = matrix{{-6, 1, 6}, {-8, 8, 6}, {-7, -1, 1}}
+
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
 	}
 }
 
