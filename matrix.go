@@ -17,6 +17,15 @@ func newMatrix(rows, cols int) matrix {
 	return m
 }
 
+// newTranslationMatrix returns a translation matrix
+func newTranslationMatrix(x, y, z float64) matrix {
+	m := identity
+	m[0][3] = x
+	m[1][3] = y
+	m[2][3] = z
+	return m
+}
+
 func (m matrix) Cofactor(row, col int) float64 {
 	minor := m.Minor(row, col)
 

@@ -51,8 +51,23 @@ func (t tuple) Dot(b tuple) float64 {
 	return t.X*b.X + t.Y*b.Y + t.Z*b.Z + t.W*b.W
 }
 
+func (t tuple) Equals(x tuple) bool {
+	return floatsEqual(t.X, x.X) &&
+		floatsEqual(t.Y, x.Y) &&
+		floatsEqual(t.Z, x.Z) &&
+		floatsEqual(t.Z, x.Z)
+}
+
 func (t tuple) HadamardProduct(color tuple) tuple {
 	return tuple{t.X * color.X, t.Y * color.Y, t.Z * color.Z, 0}
+}
+
+func (t tuple) Int() (int, int, int, int) {
+	return clampFloat(t.X * 255), clampFloat(t.Y * 255), clampFloat(t.Z * 255), clampFloat(t.W * 255)
+}
+
+func (t tuple) IsVector() bool {
+	return floatsEqual(t.W, 0)
 }
 
 func (t tuple) Magnitude() float64 {
@@ -76,21 +91,6 @@ func (t tuple) Sub(x tuple) tuple {
 	return tuple{t.X - x.X, t.Y - x.Y, t.Z - x.Z, t.W - x.W}
 }
 
-func (t tuple) Int() (int, int, int, int) {
-	return clampFloat(t.X * 255), clampFloat(t.Y * 255), clampFloat(t.Z * 255), clampFloat(t.W * 255)
-}
-
-func (t tuple) IsVector() bool {
-	return floatsEqual(t.W, 0)
-}
-
 func floatsEqual(x, y float64) bool {
 	return math.Abs(x-y) < 0.001
-}
-
-func (t tuple) Equals(x tuple) bool {
-	return floatsEqual(t.X, x.X) &&
-		floatsEqual(t.Y, x.Y) &&
-		floatsEqual(t.Z, x.Z) &&
-		floatsEqual(t.Z, x.Z)
 }

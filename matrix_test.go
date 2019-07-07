@@ -127,6 +127,27 @@ func TestMatrix_Submatrix(t *testing.T) {
 	}
 }
 
+func TestMatrix_Translate(t *testing.T) {
+	trans := newTranslationMatrix(5, -3, 2)
+	res := trans.MulTuple(point(-3, 4, 5))
+	ref := point(2, 1, 7)
+
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.Inverse().MulTuple(point(-3,4,5))
+	ref = point(-8,7,3)
+	if !res.Equals(ref) {
+		t.Errorf(`Expected %v but got %v`, ref, res)
+	}
+
+	res = trans.MulTuple(vector(-3, 4, 5))
+	if !res.Equals(vector(-3, 4, 5)) {
+		t.Errorf(`Expected %v but got %v`, vector(-3, 4, 5), res)
+	}
+}
+
 func TestMatrix_Transpose(t *testing.T) {
 	a := matrix{
 		{0, 9, 3, 0},
