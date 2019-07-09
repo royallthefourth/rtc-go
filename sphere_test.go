@@ -10,22 +10,22 @@ func TestSphere_Intersect(t *testing.T) {
 	}{
 		{
 			R:  ray{point(0, 0, -5), vector(0, 0, 1)},
-			S:  sphere{point(0, 0, 0), 1},
+			S:  newSphere(),
 			Ts: []float64{4, 6},
 		},
 		{
 			R:  ray{point(0, 1, -5), vector(0, 0, 1)},
-			S:  sphere{point(0, 0, 0), 1},
+			S:  newSphere(),
 			Ts: []float64{5, 5},
 		},
 		{
 			R:  ray{point(0, 2, -5), vector(0, 0, 1)},
-			S:  sphere{point(0, 0, 0), 1},
+			S:  newSphere(),
 			Ts: []float64{},
 		},
 		{
 			R:  ray{point(0, 0, 0), vector(0, 0, 1)},
-			S:  sphere{point(0, 0, 0), 1},
+			S:  newSphere(),
 			Ts: []float64{-1, 1},
 		},
 	}
@@ -36,9 +36,16 @@ func TestSphere_Intersect(t *testing.T) {
 			t.Errorf(`Expected %v but got %v`, test.Ts, res)
 		}
 		for ix, tVal := range test.Ts {
-			if res[ix] != tVal {
+			if res[ix].T != tVal {
 				t.Errorf(`Expected %f but got %f`, tVal, res[ix])
 			}
 		}
+	}
+}
+
+func TestSphere_IntersectScale(t *testing.T) {
+	r := ray{
+		Origin:    point(0,0,-5),
+		Direction: vector(0,0,1),
 	}
 }

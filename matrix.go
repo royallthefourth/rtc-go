@@ -2,26 +2,30 @@ package main
 
 import "math"
 
-type matrix [][]float64
+type Matrix [][]float64
 
-// newMatrix returns an initialized matrix
-func newMatrix(rows, cols int) matrix {
-	m := make(matrix, rows)
+type Transformable interface {
+	Transform(Matrix)
+}
+
+// newMatrix returns an initialized Matrix
+func newMatrix(rows, cols int) Matrix {
+	m := make(Matrix, rows)
 	for i := 0; i < rows; i++ {
 		m[i] = make([]float64, cols)
 	}
 	return m
 }
 
-func identity() matrix {
-	return matrix{
+func identity() Matrix {
+	return Matrix{
 		{1, 0, 0, 0},
 		{0, 1, 0, 0},
 		{0, 0, 1, 0},
 		{0, 0, 0, 1}}
 }
 
-func RotX(radians float64) matrix {
+func RotX(radians float64) Matrix {
 	m := identity()
 	m[1][1] = math.Cos(radians)
 	m[1][2] = -1 * math.Sin(radians)
@@ -30,7 +34,7 @@ func RotX(radians float64) matrix {
 	return m
 }
 
-func RotY(radians float64) matrix {
+func RotY(radians float64) Matrix {
 	m := identity()
 	m[0][0] = math.Cos(radians)
 	m[0][2] = math.Sin(radians)
@@ -39,7 +43,7 @@ func RotY(radians float64) matrix {
 	return m
 }
 
-func RotZ(radians float64) matrix {
+func RotZ(radians float64) Matrix {
 	m := identity()
 	m[0][0] = math.Cos(radians)
 	m[0][1] = -1 * math.Sin(radians)
@@ -48,7 +52,7 @@ func RotZ(radians float64) matrix {
 	return m
 }
 
-func Shear(xy, xz, yx, yz, zx, zy float64) matrix {
+func Shear(xy, xz, yx, yz, zx, zy float64) Matrix {
 	m := identity()
 	m[0][1] = xy
 	m[0][2] = xz
@@ -59,7 +63,7 @@ func Shear(xy, xz, yx, yz, zx, zy float64) matrix {
 	return m
 }
 
-func (m matrix) Cofactor(row, col int) float64 {
+func (m Matrix) Cofactor(row, col int) float64 {
 	minor := m.Minor(row, col)
 
 	if (row+col)%2 == 1 {
@@ -69,7 +73,7 @@ func (m matrix) Cofactor(row, col int) float64 {
 	return minor
 }
 
-func (m matrix) Determinant() float64 {
+func (m Matrix) Determinant() float64 {
 	if len(m) == 2 && len(m[0]) == 2 {
 		return m[0][0]*m[1][1] - m[0][1]*m[1][0]
 	}
@@ -82,7 +86,7 @@ func (m matrix) Determinant() float64 {
 	return det
 }
 
-func (m matrix) Equals(n matrix) bool {
+func (m Matrix) Equals(n Matrix) bool {
 	if len(m) != len(n) || len(m[0]) != len(n[0]) {
 		return false
 	}
@@ -97,23 +101,23 @@ func (m matrix) Equals(n matrix) bool {
 	return true
 }
 
-func (m matrix) Inverse() matrix {
+func (m Matrix) Inverse() Matrix {
 	out := newMatrix(len(m), len(m[0]))
 
 	for i := 0; i < len(m); i++ {
 		for j := 0; j < len(m[0]); j++ {
-			out[j][i] = m.Cofactor(i, j) / m.Determinant() // this will panic if determinant is 0, meaning matrix is not invertible
+			out[j][i] = m.Cofactor(i, j) / m.Determinant() // this will panic if determinant is 0, meaning Matrix is not invertible
 		}
 	}
 
 	return out
 }
 
-func (m matrix) Minor(row, col int) float64 {
+func (m Matrix) Minor(row, col int) float64 {
 	return m.Submatrix(row, col).Determinant()
 }
 
-func (m matrix) Mul(n matrix) matrix {
+func (m Matrix) Mul(n Matrix) Matrix {
 	out := newMatrix(len(m), len(n[0]))
 
 	for i := 0; i < len(out); i++ {
@@ -128,8 +132,8 @@ func (m matrix) Mul(n matrix) matrix {
 	return out
 }
 
-func (m matrix) MulTuple(t tuple) tuple {
-	o := m.Mul(matrix{{t.X}, {t.Y}, {t.Z}, {t.W}})
+func (m Matrix) MulTuple(t tuple) tuple {
+	o := m.Mul(Matrix{{t.X}, {t.Y}, {t.Z}, {t.W}})
 	return tuple{
 		X: o[0][0],
 		Y: o[1][0],
@@ -138,7 +142,7 @@ func (m matrix) MulTuple(t tuple) tuple {
 	}
 }
 
-func (m matrix) Submatrix(row, col int) matrix {
+func (m Matrix) Submatrix(row, col int) Matrix {
 	out := newMatrix(len(m)-1, len(m[0])-1)
 
 	var jOffset, iOffset int
@@ -166,7 +170,7 @@ func (m matrix) Submatrix(row, col int) matrix {
 	return out
 }
 
-func (m matrix) Transpose() matrix {
+func (m Matrix) Transpose() Matrix {
 	out := newMatrix(len(m[0]), len(m))
 
 	for i := 0; i < len(m); i++ {

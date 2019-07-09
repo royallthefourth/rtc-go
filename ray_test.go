@@ -20,3 +20,28 @@ func TestRay_Position(t *testing.T) {
 		}
 	}
 }
+
+func TestRay_Transform(t *testing.T) {
+	ray1 := ray{
+		Origin:    point(1, 2, 3),
+		Direction: vector(0, 1, 0),
+	}
+	ray2 := ray1
+
+	ray1.Transform(point(3, 4, 5).Translation())
+	ray2.Transform(point(2, 3, 4).Scaling())
+
+	if !ray1.Origin.Equals(point(4, 6, 8)) {
+		t.Errorf(`Expected %v but got %v`, point(4, 6, 8), ray1.Origin)
+	}
+	if !ray1.Direction.Equals(point(0, 1, 0)) {
+		t.Errorf(`Expected %v but got %v`, point(0, 1, 0), ray1.Direction)
+	}
+
+	if !ray2.Origin.Equals(point(2, 6, 12)) {
+		t.Errorf(`Expected %v but got %v`, point(2, 6, 12), ray2.Origin)
+	}
+	if !ray2.Direction.Equals(point(0, 3, 0)) {
+		t.Errorf(`Expected %v but got %v`, point(0, 3, 0), ray2.Direction)
+	}
+}

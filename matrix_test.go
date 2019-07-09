@@ -6,7 +6,7 @@ import (
 )
 
 func TestMatrix_Cofactor(t *testing.T) {
-	m := matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}
+	m := Matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}
 	res1 := m.Cofactor(0, 0)
 	res2 := m.Cofactor(1, 0)
 
@@ -20,16 +20,16 @@ func TestMatrix_Cofactor(t *testing.T) {
 }
 
 func TestMatrix_Determinant(t *testing.T) {
-	if !floatsEqual(matrix{{1, 5}, {-3, 2}}.Determinant(), 17) {
-		t.Errorf(`Expected 17 but got %f`, matrix{{1, 5}, {-3, 2}}.Determinant())
+	if !floatsEqual(Matrix{{1, 5}, {-3, 2}}.Determinant(), 17) {
+		t.Errorf(`Expected 17 but got %f`, Matrix{{1, 5}, {-3, 2}}.Determinant())
 	}
 
 	tests := []struct {
-		M matrix
+		M Matrix
 		D float64
 	}{
-		{matrix{{1, 2, 6}, {-5, 8, -4}, {2, 6, 4}}, -196},
-		{matrix{{-2, -8, 3, 5}, {-3, 1, 7, 3}, {1, 2, -9, 6}, {-6, 7, 7, -9}}, -4071},
+		{Matrix{{1, 2, 6}, {-5, 8, -4}, {2, 6, 4}}, -196},
+		{Matrix{{-2, -8, 3, 5}, {-3, 1, 7, 3}, {1, 2, -9, 6}, {-6, 7, 7, -9}}, -4071},
 	}
 
 	for _, tst := range tests {
@@ -40,9 +40,9 @@ func TestMatrix_Determinant(t *testing.T) {
 }
 
 func TestMatrix_Equals(t *testing.T) {
-	m := matrix{{1, 2}, {3, 4}}
-	n := matrix{{1, 2}, {3, 4}}
-	o := matrix{{1, 2}, {2, 4}}
+	m := Matrix{{1, 2}, {3, 4}}
+	n := Matrix{{1, 2}, {3, 4}}
+	o := Matrix{{1, 2}, {2, 4}}
 
 	if !m.Equals(n) {
 		t.Errorf(`%v should equal %v`, m, n)
@@ -54,8 +54,8 @@ func TestMatrix_Equals(t *testing.T) {
 }
 
 func TestMatrix_Inverse(t *testing.T) {
-	res := matrix{{-5, 2, 6, -8}, {1, -5, 1, 8}, {7, 7, -6, -7}, {1, -3, 7, 4}}.Inverse()
-	ref := matrix{{.21805, .45113, .24060, -.04511},
+	res := Matrix{{-5, 2, 6, -8}, {1, -5, 1, 8}, {7, 7, -6, -7}, {1, -3, 7, 4}}.Inverse()
+	ref := Matrix{{.21805, .45113, .24060, -.04511},
 		{-.80827, -1.45677, -.44361, .52068},
 		{-.07895, -.22368, -.05263, .19737},
 		{-.52256, -.81391, -.30075, .30639}}
@@ -66,7 +66,7 @@ func TestMatrix_Inverse(t *testing.T) {
 }
 
 func TestMatrix_Minor(t *testing.T) {
-	res := matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}.Minor(1, 0)
+	res := Matrix{{3, 5, 0}, {2, -1, -7}, {6, -1, 5}}.Minor(1, 0)
 
 	if !floatsEqual(25, res) {
 		t.Errorf(`Expected %f but got %f`, float64(25), res)
@@ -74,17 +74,17 @@ func TestMatrix_Minor(t *testing.T) {
 }
 
 func TestMatrix_Mul(t *testing.T) {
-	a := matrix{
+	a := Matrix{
 		{1, 2, 3, 4},
 		{5, 6, 7, 8},
 		{9, 8, 7, 6},
 		{5, 4, 3, 2}}
-	b := matrix{
+	b := Matrix{
 		{-2, 1, 2, 3},
 		{3, 2, 1, -1},
 		{4, 3, 6, 5},
 		{1, 2, 7, 8}}
-	prod := matrix{
+	prod := Matrix{
 		{20, 22, 50, 48},
 		{44, 54, 114, 108},
 		{40, 58, 110, 102},
@@ -96,7 +96,7 @@ func TestMatrix_Mul(t *testing.T) {
 }
 
 func TestMatrix_MulTuple(t *testing.T) {
-	a := matrix{
+	a := Matrix{
 		{1, 2, 3, 4},
 		{2, 4, 4, 2},
 		{8, 6, 4, 1},
@@ -115,15 +115,15 @@ func TestMatrix_MulTuple(t *testing.T) {
 }
 
 func TestMatrix_Submatrix(t *testing.T) {
-	res := matrix{{1, 5, 0}, {-3, 2, 7}, {0, 6, -3}}.Submatrix(0, 2)
-	ref := matrix{{-3, 2}, {0, 6}}
+	res := Matrix{{1, 5, 0}, {-3, 2, 7}, {0, 6, -3}}.Submatrix(0, 2)
+	ref := Matrix{{-3, 2}, {0, 6}}
 
 	if !res.Equals(ref) {
 		t.Errorf(`Expected %v but got %v`, ref, res)
 	}
 
-	res = matrix{{-6, 1, 1, 6}, {-8, 5, 8, 6}, {-1, 0, 8, 2}, {-7, 1, -1, 1}}.Submatrix(2, 1)
-	ref = matrix{{-6, 1, 6}, {-8, 8, 6}, {-7, -1, 1}}
+	res = Matrix{{-6, 1, 1, 6}, {-8, 5, 8, 6}, {-1, 0, 8, 2}, {-7, 1, -1, 1}}.Submatrix(2, 1)
+	ref = Matrix{{-6, 1, 6}, {-8, 8, 6}, {-7, -1, 1}}
 
 	if !res.Equals(ref) {
 		t.Errorf(`Expected %v but got %v`, ref, res)
@@ -131,12 +131,12 @@ func TestMatrix_Submatrix(t *testing.T) {
 }
 
 func TestMatrix_Transpose(t *testing.T) {
-	a := matrix{
+	a := Matrix{
 		{0, 9, 3, 0},
 		{9, 8, 0, 8},
 		{1, 8, 5, 3},
 		{0, 0, 5, 8}}
-	b := matrix{
+	b := Matrix{
 		{0, 9, 1, 0},
 		{9, 8, 8, 0},
 		{3, 0, 5, 5},

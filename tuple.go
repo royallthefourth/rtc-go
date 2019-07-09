@@ -87,7 +87,7 @@ func (t tuple) Normalize() tuple {
 	return tuple{t.X / m, t.Y / m, t.Z / m, t.W / m}
 }
 
-func (t tuple) Scaling() matrix {
+func (t tuple) Scaling() Matrix {
 	m := identity()
 	m[0][0] = t.X
 	m[1][1] = t.Y
@@ -99,7 +99,7 @@ func (t tuple) Sub(x tuple) tuple {
 	return tuple{t.X - x.X, t.Y - x.Y, t.Z - x.Z, t.W - x.W}
 }
 
-func (t tuple) Translation() matrix {
+func (t tuple) Translation() Matrix {
 	m := identity()
 	m[0][3] = t.X
 	m[1][3] = t.Y
